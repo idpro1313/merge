@@ -1,0 +1,82 @@
+<RequirementsAnalysis VERSION="0.1.0">
+  <Project>
+    <name>Merge Tap</name>
+    <annotation>Merge Tap — игра-головоломка на слияние предметов в Telegram Mini App.</annotation>
+    <keywords>merge-tap, game, Telegram, merge, 2048-like</keywords>
+  </Project>
+
+  <Actors>
+    <actor-Player>Игрок, взаимодействующий с Mini App через Telegram.</actor-Player>
+    <actor-TelegramBot>Telegram Bot API для отправки сообщений и inline-кнопок.</actor-TelegramBot>
+    <actor-Backend>Express-сервер с SQLite для хранения данных.</actor-Backend>
+  </Actors>
+
+  <UseCases>
+    <UC-001>
+      <Actor>Player</Actor>
+      <Action>Запуск игры через /start в Telegram</Action>
+      <Goal>Получить приветственное сообщение и кнопку открытия Mini App</Goal>
+      <Preconditions>Бот запущен, BOT_TOKEN сконфигурирован</Preconditions>
+      <AcceptanceCriteria>Бот отправляет сообщение с inline-кнопкой «Open Game»</AcceptanceCriteria>
+      <Priority>high</Priority>
+      <RelatedFlows>DF-001</RelatedFlows>
+    </UC-001>
+
+    <UC-002>
+      <Actor>Player</Actor>
+      <Action>Тап по ячейке на доске</Action>
+      <Goal>Выбрать ячейку для слияния или слить 3+ ячейки одного уровня</Goal>
+      <Preconditions>Доска инициализирована, есть хотя бы 3 ячейки одного уровня</Preconditions>
+      <AcceptanceCriteria>3 ячейки одного уровня сливаются в одну уровня level+1; начисляются очки</AcceptanceCriteria>
+      <Priority>high</Priority>
+      <RelatedFlows>DF-002</RelatedFlows>
+    </UC-002>
+
+    <UC-003>
+      <Actor>Player</Actor>
+      <Action>Удаление ячейки (режим Remove)</Action>
+      <Goal>Освободить место на доске за счёт удаления одной ячейки</Goal>
+      <Preconditions>Режим Remove активен</Preconditions>
+      <AcceptanceCriteria>Ячейка удалена, новая случайная ячейка появляется на доске</AcceptanceCriteria>
+      <Priority>medium</Priority>
+    </UC-003>
+
+    <UC-004>
+      <Actor>Player</Actor>
+      <Action>Сохранение игры</Action>
+      <Goal>Сохранить текущее состояние доски на сервере</Goal>
+      <Preconditions>Пользователь аутентифицирован</Preconditions>
+      <AcceptanceCriteria>Состояние сохранено, отображается индикатор Saved</AcceptanceCriteria>
+      <Priority>medium</Priority>
+    </UC-004>
+
+    <UC-005>
+      <Actor>Player</Actor>
+      <Action>Просмотр таблицы лидеров</Action>
+      <Goal>Увидеть топ-20 игроков по очкам</Goal>
+      <Preconditions>Есть хотя бы один игрок с score > 0</Preconditions>
+      <AcceptanceCriteria>Отображается модальное окно с ранжированным списком игроков</AcceptanceCriteria>
+      <Priority>low</Priority>
+    </UC-005>
+  </UseCases>
+
+  <NonGoals>
+    <item-1>Никакой публичный API для сторонних приложений в v1.</item-1>
+    <item-2>Никакой мультиплеер или real-time синхронизация.</item-2>
+  </NonGoals>
+
+  <Constraints>
+    <constraint-1>Данные хранятся локально на сервере в SQLite (одна инсталляция).</constraint-1>
+    <constraint-2>JWT_SECRET и BOT_TOKEN никогда не должны попадать в логи.</constraint-2>
+    <constraint-3>Все исходные файлы содержат GRACE-разметку (MODULE_CONTRACT, METHOD/CLASS/BLOCK).</constraint-3>
+  </Constraints>
+
+  <Risks>
+    <risk-1>sql.js не поддерживает конкурентные запросы — все операции с БД синхронны.</risk-1>
+    <risk-2>Потеря данных БД при перезапуске без saveDb().</risk-2>
+  </Risks>
+
+  <OpenQuestions>
+    <question-1>Нужна ли поддержка multiple save slots?</question-1>
+  </OpenQuestions>
+</RequirementsAnalysis>

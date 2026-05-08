@@ -1,0 +1,164 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary: #17212b;
+  --bg-secondary: #242f3d;
+  --bg-cell: #2b3b4a;
+  --text-primary: #ffffff;
+  --text-secondary: #8b9eb0;
+  --accent: #6ab2f2;
+  --border-radius: 8px;
+  --cell-gap: 3px;
+}
+
+html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 8px;
+  gap: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.scorebar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+}
+
+.scorebar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.scorebar__label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.scorebar__value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.scorebar__saved {
+  font-size: 11px;
+  color: var(--accent);
+  animation: fadeIn 0.3s;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--cell-gap);
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 4px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 6px;
+  font-size: calc(12px + 0.5vw);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  padding: 0;
+}
+
+.cell--empty { background: var(--bg-cell); color: transparent; }
+.cell--filled { animation: popIn 0.2s ease-out; }
+.cell--selected { box-shadow: 0 0 0 3px var(--accent), 0 0 12px rgba(106, 178, 242, 0.5); transform: scale(1.05); z-index: 1; }
+.cell--remove-mode.cell--filled::after { content: ''; position: absolute; inset: 0; background: rgba(255, 60, 60, 0.25); border-radius: 6px; }
+.cell--remove-mode.cell--filled { animation: pulse 1s infinite; }
+
+.actionbar {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.actionbar__btn {
+  padding: 8px 14px;
+  border: 1px solid var(--text-secondary);
+  border-radius: var(--border-radius);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.actionbar__btn:active { background: var(--bg-primary); }
+.actionbar__btn--active { border-color: #ff6b6b; color: #ff6b6b; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal__header h2 { font-size: 18px; }
+.modal__close { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; }
+.modal__loading, .modal__empty { color: var(--text-secondary); text-align: center; padding: 20px; }
+
+.leaderboard-table { width: 100%; border-collapse: collapse; }
+.leaderboard-table th { text-align: left; color: var(--text-secondary); font-size: 12px; text-transform: uppercase; padding-bottom: 8px; }
+.leaderboard-table td { padding: 6px 0; border-bottom: 1px solid var(--bg-primary); }
+.leaderboard-table tr:last-child td { border-bottom: none; }
+
+.loading-overlay { position: fixed; inset: 0; background: var(--bg-primary); display: flex; align-items: center; justify-content: center; z-index: 200; }
+.loading-overlay p { color: var(--text-secondary); }
+
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

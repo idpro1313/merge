@@ -1,0 +1,54 @@
+<TechnologyStack VERSION="0.1.0">
+  <Runtime>Node.js 22.x</Runtime>
+  <Language>TypeScript ~5.6.2</Language>
+  <Framework>Express 4.21 (backend), React 18.3 (frontend)</Framework>
+
+  <Dependencies>
+    <dep name="express" version="^4.21.1" purpose="HTTP-сервер backend" />
+    <dep name="cors" version="^2.8.5" purpose="CORS-заголовки" />
+    <dep name="jsonwebtoken" version="^9.0.2" purpose="JWT-аутентификация" />
+    <dep name="sql.js" version="^1.11.0" purpose="SQLite в памяти (через better-sqlite3)" />
+    <dep name="better-sqlite3" version="^11.6.0" purpose="SQLite-Binding для Node.js" />
+    <dep name="react" version="^18.3.1" purpose="UI-библиотека" />
+    <dep name="react-dom" version="^18.3.1" purpose="DOM-рендер React" />
+    <dep name="vite" version="^6.0.0" purpose="Сборщик frontend" />
+    <dep name="node-telegram-bot-api" version="latest" purpose="Telegram Bot API client" />
+  </Dependencies>
+
+  <VersionConstraints>
+    <constraint lib="react" min="18.0.0" max="18.x" reason="The frontend depends on React 18 APIs" />
+    <constraint lib="typescript" min="5.6.0" max="5.6.x" reason="Project uses TypeScript 5.6" />
+  </VersionConstraints>
+
+  <Tooling>
+    <tool name="bundler" value="vite" version="6.x" />
+    <tool name="runner" value="tsx" version="4.x" />
+    <tool name="runtime" value="node" version="22.x" />
+  </Tooling>
+
+  <Testing>
+    <module-level>
+      <command>Не настроено</command>
+      <focus>Модульные тесты для core-логики board.ts, levels.ts, types.ts</focus>
+    </module-level>
+    <mocking-policy>Предпочтительно использовать fakes и узкие стабы вместо широких monkey-patch.</mocking-policy>
+  </Testing>
+
+  <Observability>
+    <logger>console.log / console.error (без структурированного логгера)</logger>
+    <log-format>[Module][function][BLOCK_NAME] message</log-format>
+    <branch-observability-policy>Для критических модулей (auth, game routes, useGame) — маркер на каждую поведенческую ветку.</branch-observability-policy>
+    <redaction>Никогда не логировать secrets, credentials, BOT_TOKEN, JWT_SECRET.</redaction>
+  </Observability>
+
+  <AutonomyPolicy>
+    <default-execution-profile>balanced</default-execution-profile>
+    <max-fix-attempts-per-step>2</max-fix-attempts-per-step>
+    <replan-trigger>Missing dependency, contradictory contract, or unclear third-party surface.</replan-trigger>
+    <checkpoint-requirement>Every completed step must emit assumptions, commands, evidence, and next action.</checkpoint-requirement>
+  </AutonomyPolicy>
+
+  <DeliveryShape>
+    <shape>Same-origin monolith with one SQLite database and one Telegram bot process.</shape>
+  </DeliveryShape>
+</TechnologyStack>

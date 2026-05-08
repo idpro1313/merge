@@ -1,0 +1,143 @@
+<KnowledgeGraph>
+  <Project NAME="Merge Tap" VERSION="0.1.0">
+    <keywords>merge-tap, game, Telegram, merge, 2048-like</keywords>
+    <annotation>Merge Tap — игра-головоломка на слияние предметов в Telegram Mini App. Backend на Express + sql.js, frontend на React 18, Telegram Bot API.</annotation>
+
+    <M-API NAME="API Client" TYPE="UTILITY">
+      <purpose>HTTP-клиент для взаимодействия с backend API</purpose>
+      <path>frontend/src/api/client.ts</path>
+      <depends>нет (использует fetch)</depends>
+      <verification-ref>V-M-API</verification-ref>
+      <annotations>
+        <fn-login PURPOSE="Аутентификация через Telegram initData" />
+        <fn-getProfile PURPOSE="Получение профиля текущего пользователя" />
+        <fn-saveGame PURPOSE="Сохранение игры на сервере" />
+        <fn-loadGame PURPOSE="Загрузка сохранённой игры с сервера" />
+        <fn-getLeaderboard PURPOSE="Получение таблицы лидеров" />
+      </annotations>
+    </M-API>
+
+    <M-BOARD_LOGIC NAME="Board Logic" TYPE="CORE_LOGIC">
+      <purpose>Логика игровой доски: создание, поиск, удаление, спавн ячеек</purpose>
+      <path>frontend/src/game/board.ts</path>
+      <depends>M-TYPES</depends>
+      <verification-ref>V-M-BOARD_LOGIC</verification-ref>
+      <annotations>
+        <fn-createId PURPOSE="Генерация уникального ID ячейки" />
+        <fn-createCell PURPOSE="Создание ячейки с указанным уровнем" />
+        <fn-createEmptyBoard PURPOSE="Создание пустой доски BOARD_SIZE x BOARD_SIZE" />
+        <fn-getEmptyCells PURPOSE="Поиск пустых клеток на доске" />
+        <fn-spawnRandomCell PURPOSE="Спавн случайной ячейки уровня 1 в пустую клетку" />
+        <fn-spawnCellAt PURPOSE="Спавн ячейки в конкретную позицию" />
+        <fn-removeCell PURPOSE="Удаление ячейки с доски" />
+        <fn-findCellsByLevel PURPOSE="Поиск всех ячеек указанного уровня" />
+        <fn-countCells PURPOSE="Подсчёт количества занятых клеток" />
+        <fn-getMaxLevel PURPOSE="Определение максимального уровня на доске" />
+        <fn-cloneBoard PURPOSE="Глубокое копирование доски" />
+      </annotations>
+      <CrossLink from="M-BOARD_LOGIC" to="M-TYPES" relation="depends-on" />
+    </M-BOARD_LOGIC>
+
+    <M-TYPES NAME="Game Types" TYPE="TYPES">
+      <purpose>Типы и константы игрового движка</purpose>
+      <path>frontend/src/game/types.ts</path>
+      <depends>нет</depends>
+      <verification-ref>V-M-TYPES</verification-ref>
+      <annotations>
+        <type-Cell PURPOSE="Ячейка с уровнем и ID" />
+        <type-Board PURPOSE="Матрица BOARD_SIZE x BOARD_SIZE из Cell | null" />
+        <type-GameState PURPOSE="Полное состояние игры" />
+        <type-Position PURPOSE="Координаты клетки (row, col)" />
+      </annotations>
+    </M-TYPES>
+
+    <M-LEVELS NAME="Level Styles" TYPE="UTILITY">
+      <purpose>Расчёт цвета и стиля ячейки по её уровню</purpose>
+      <path>frontend/src/game/levels.ts</path>
+      <depends>нет</depends>
+      <verification-ref>V-M-LEVELS</verification-ref>
+      <annotations>
+        <fn-getLevelStyle PURPOSE="Получить HSL-стиль для уровня" />
+        <fn-getLevelColor PURPOSE="Получить CSS-цвет фона для уровня" />
+        <fn-getLevelTextColor PURPOSE="Получить CSS-цвет текста для уровня" />
+      </annotations>
+    </M-LEVELS>
+
+    <M-USE_GAME NAME="useGame Hook" TYPE="CORE_LOGIC">
+      <purpose>React-хук управления состоянием игры: тапы, слияние, сохранение</purpose>
+      <path>frontend/src/hooks/useGame.ts</path>
+      <depends>M-BOARD_LOGIC, M-TYPES, M-API</depends>
+      <verification-ref>V-M-USE_GAME</verification-ref>
+      <annotations>
+        <fn-useGame PURPOSE="Основной хук игровой логики" />
+      </annotations>
+      <CrossLink from="M-USE_GAME" to="M-BOARD_LOGIC" relation="uses" />
+      <CrossLink from="M-USE_GAME" to="M-TYPES" relation="uses" />
+      <CrossLink from="M-USE_GAME" to="M-API" relation="uses" />
+    </M-USE_GAME>
+
+    <M-APP NAME="App Component" TYPE="UI_COMPONENT">
+      <purpose>Корневой компонент приложения, оркестрация UI и аутентификация</purpose>
+      <path>frontend/src/App.tsx</path>
+      <depends>M-USE_GAME, M-API, M-BOARD_LOGIC, M-COMPONENTS</depends>
+      <verification-ref>V-M-APP</verification-ref>
+    </M-APP>
+
+    <M-COMPONENTS NAME="UI Components" TYPE="UI_COMPONENT">
+      <purpose>Набор презентационных React-компонентов игрового интерфейса</purpose>
+      <path>frontend/src/components/</path>
+      <depends>M-LEVELS, M-TYPES, M-API</depends>
+      <verification-ref>V-M-COMPONENTS</verification-ref>
+      <annotations>
+        <fn-Board PURPOSE="Отрисовка сетки доски" />
+        <fn-Cell PURPOSE="Отрисовка отдельной ячейки" />
+        <fn-ScoreBar PURPOSE="Панель счёта, уровня и количества ячеек" />
+        <fn-ActionBar PURPOSE="Панель действий: Remove, Save, Load, Reset, Rankings" />
+        <fn-Leaderboard PURPOSE="Модальное окно таблицы лидеров" />
+      </annotations>
+    </M-COMPONENTS>
+
+    <M-MAIN_ENTRY NAME="Main Entry" TYPE="ENTRY_POINT">
+      <purpose>Точка входа React-приложения</purpose>
+      <path>frontend/src/main.tsx</path>
+      <depends>M-APP</depends>
+    </M-MAIN_ENTRY>
+
+    <M-BACKEND_ENTRY NAME="Backend Entry" TYPE="ENTRY_POINT">
+      <purpose>Точка входа Express-сервера</purpose>
+      <path>backend/src/index.ts</path>
+      <depends>M-DB, M-AUTH, M-BACKEND_ROUTES</depends>
+      <verification-ref>V-M-BACKEND_ENTRY</verification-ref>
+    </M-BACKEND_ENTRY>
+
+    <M-DB NAME="Database Layer" TYPE="DATA_LAYER">
+      <purpose>Инициализация SQLite БД, CRUD-операции, схема таблиц</purpose>
+      <path>backend/src/db.ts</path>
+      <depends>sql.js</depends>
+      <verification-ref>V-M-DB</verification-ref>
+    </M-DB>
+
+    <M-AUTH NAME="Auth Middleware" TYPE="INTEGRATION">
+      <purpose>Верификация Telegram initData и JWT-аутентификация</purpose>
+      <path>backend/src/middleware/auth.ts</path>
+      <depends>M-DB, jsonwebtoken</depends>
+      <verification-ref>V-M-AUTH</verification-ref>
+    </M-AUTH>
+
+    <M-BACKEND_ROUTES NAME="Backend Routes" TYPE="CORE_LOGIC">
+      <purpose>Express-роуты: game (save/load), users, leaderboard</purpose>
+      <path>backend/src/routes/</path>
+      <depends>M-AUTH, M-DB</depends>
+      <verification-ref>V-M-BACKEND_ROUTES</verification-ref>
+      <CrossLink from="M-BACKEND_ROUTES" to="M-AUTH" relation="uses" />
+      <CrossLink from="M-BACKEND_ROUTES" to="M-DB" relation="uses" />
+    </M-BACKEND_ROUTES>
+
+    <M-BOT NAME="Telegram Bot" TYPE="INTEGRATION">
+      <purpose>Telegram-бот для взаимодействия с Mini App</purpose>
+      <path>bot/src/index.ts</path>
+      <depends>node-telegram-bot-api, M-API</depends>
+      <verification-ref>V-M-BOT</verification-ref>
+    </M-BOT>
+  </Project>
+</KnowledgeGraph>

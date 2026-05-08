@@ -1,0 +1,6 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  // Проектные правила GRACE для Kilo Code.
+  // Если в целевом проекте уже есть kilo.jsonc, объедините настройки вручную.
+  "instructions": [".kilo/rules/*.md"]
+}

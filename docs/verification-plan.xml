@@ -1,0 +1,166 @@
+<VerificationPlan VERSION="0.1.0">
+  <module-verification>
+    <V-M-TYPES MODULE="M-TYPES">
+      <purpose>Проверка типов и констант игрового движка</purpose>
+      <test-files>
+        <file>tests/game/types.test.ts (planned)</file>
+      </test-files>
+      <module-checks>
+        <check-1>BOARD_SIZE = 8</check-1>
+        <check-2>MERGE_REQUIRED = 3</check-2>
+        <check-3>Cell, Board, GameState, Position типы корректны</check-3>
+      </module-checks>
+    </V-M-TYPES>
+
+    <V-M-BOARD_LOGIC MODULE="M-BOARD_LOGIC">
+      <purpose>Проверка чистых функций управления доской</purpose>
+      <test-files>
+        <file>tests/game/board.test.ts (planned)</file>
+      </test-files>
+      <module-checks>
+        <check-1>createId генерирует уникальные ID</check-1>
+        <check-2>createEmptyBoard создаёт BOARD_SIZE x BOARD_SIZE с null</check-2>
+        <check-3>spawnRandomCell добавляет ячейку уровня 1 в пустую клетку</check-3>
+        <check-4>removeCell удаляет ячейку по координатам</check-4>
+        <check-5>findCellsByLevel находит все ячейки указанного уровня</check-5>
+        <check-6>cloneBoard делает глубокую копию</check-6>
+        <check-7>getEmptyCells возвращает только пустые клетки</check-7>
+      </module-checks>
+      <scenarios>
+        <scenario-1 name="spawn_on_full_board">
+          <description>При полной доске spawnRandomCell возвращает null</description>
+          <required-log-markers />
+        </scenario-1>
+      </scenarios>
+    </V-M-BOARD_LOGIC>
+
+    <V-M-LEVELS MODULE="M-LEVELS">
+      <purpose>Проверка расчёта цветов уровней</purpose>
+      <test-files>
+        <file>tests/game/levels.test.ts (planned)</file>
+      </test-files>
+      <module-checks>
+        <check-1>getLevelStyle возвращает HSL для любого положительного level</check-1>
+        <check-2>getLevelTextColor возвращает чёрный/белый в зависимости от яркости</check-2>
+        <check-3>Уровень 1 имеет hue 0 (красный)</check-3>
+      </module-checks>
+    </V-M-LEVELS>
+
+    <V-M-USE_GAME MODULE="M-USE_GAME">
+      <purpose>Проверка хука управления игрой</purpose>
+      <module-checks>
+        <check-1>tapCell: первый тап выбирает ячейку</check-1>
+        <check-2>tapCell: три ячейки одного уровня сливаются</check-2>
+        <check-3>tapCell: тап по ячейке другого уровня сбрасывает выбор</check-3>
+        <check-4>tapCell: в режиме Remove удаляет ячейку и спавнит новую</check-4>
+        <check-5>saveGame/loadGame: вызов API без ошибок</check-5>
+        <check-6>resetGame: возвращает начальное состояние</check-6>
+      </module-checks>
+    </V-M-USE_GAME>
+
+    <V-M-API MODULE="M-API">
+      <purpose>Проверка HTTP-клиента</purpose>
+      <module-checks>
+        <check-1>login отправляет POST /api/auth/login с initData</check-1>
+        <check-2>saveGame отправляет POST /api/game/save с телом</check-2>
+        <check-3>loadGame отправляет GET /api/game/load</check-3>
+        <check-4>getLeaderboard отправляет GET /api/leaderboard</check-4>
+        <check-5>Токен из localStorage добавляется в Authorization header</check-5>
+      </module-checks>
+    </V-M-API>
+
+    <V-M-COMPONENTS MODULE="M-COMPONENTS">
+      <purpose>Проверка UI-компонентов</purpose>
+      <module-checks>
+        <check-1>Board отрисовывает BOARD_SIZE^2 клеток</check-1>
+        <check-2>Cell отображает уровень, обработку нажатия, стили</check-2>
+        <check-3>ScoreBar отображает score, maxLevel, cellCount</check-3>
+        <check-4>ActionBar рендерит 5 кнопок с правильными подписями</check-4>
+        <check-5>Leaderboard загружает данные и отображает топ-20</check-5>
+      </module-checks>
+    </V-M-COMPONENTS>
+
+    <V-M-APP MODULE="M-APP">
+      <purpose>Проверка корневого компонента</purpose>
+      <module-checks>
+        <check-1>При монтировании вызывает api.login с initData</check-1>
+        <check-2>Отображает loading-overlay до завершения аутентификации</check-2>
+        <check-3>Передаёт правильные пропсы в Board, ScoreBar, ActionBar</check-3>
+      </module-checks>
+    </V-M-APP>
+
+    <V-M-DB MODULE="M-DB">
+      <purpose>Проверка инициализации и операций БД</purpose>
+      <module-checks>
+        <check-1>initDb создаёт таблицы users, saves, stats</check-1>
+        <check-2>getDb возвращает экземпляр после initDb</check-2>
+        <check-3>saveDb экспортирует БД в файл</check-3>
+        <check-4>PRAGMA foreign_keys = ON включён</check-4>
+      </module-checks>
+    </V-M-DB>
+
+    <V-M-AUTH MODULE="M-AUTH">
+      <purpose>Проверка аутентификации</purpose>
+      <module-checks>
+        <check-1>authMiddleware проверяет Bearer token</check-1>
+        <check-2>loginHandler верифицирует Telegram initData</check-2>
+        <check-3>loginHandler создаёт пользователя при первом входе</check-3>
+        <check-4>loginHandler возвращает JWT</check-4>
+        <check-5>HMAC-SHA256 вычисляется с WebAppData secret</check-5>
+      </module-checks>
+      <scenarios>
+        <scenario-1 name="login_new_user">
+          <description>Новый пользователь: INSERT в users + INSERT в stats + JWT token</description>
+        </scenario-1>
+        <scenario-2 name="login_existing_user">
+          <description>Существующий пользователь: SELECT из users + JWT token</description>
+        </scenario-2>
+        <scenario-3 name="login_invalid_init_data">
+          <description>Неверный initData: 401 + сообщение об ошибке</description>
+        </scenario-3>
+      </scenarios>
+    </V-M-AUTH>
+
+    <V-M-BACKEND_ROUTES MODULE="M-BACKEND_ROUTES">
+      <purpose>Проверка API-роутов</purpose>
+      <module-checks>
+        <check-1>POST /api/game/save с корректным телом сохраняет игру</check-1>
+        <check-2>POST /api/game/save без board возвращает 400</check-2>
+        <check-3>GET /api/game/load возвращает сохранённую игру или null</check-3>
+        <check-4>GET /api/leaderboard возвращает топ-20</check-4>
+        <check-5>GET /api/users/me возвращает профиль пользователя</check-5>
+      </module-checks>
+    </V-M-BACKEND_ROUTES>
+
+    <V-M-BACKEND_ENTRY MODULE="M-BACKEND_ENTRY">
+      <purpose>Проверка точки входа сервера</purpose>
+      <module-checks>
+        <check-1>Инициализирует БД при старте</check-1>
+        <check-2>Монтирует все роуты на правильные префиксы</check-2>
+        <check-3>GET /api/health возвращает { status: 'ok' }</check-3>
+        <check-4>Сервер слушает PORT или 3001</check-4>
+      </module-checks>
+    </V-M-BACKEND_ENTRY>
+
+    <V-M-BOT MODULE="M-BOT">
+      <purpose>Проверка Telegram-бота</purpose>
+      <module-checks>
+        <check-1>/start отправляет приветствие с inline-кнопкой</check-1>
+        <check-2>/top запрашивает leaderboard и форматирует ответ</check-2>
+        <check-3>Без BOT_TOKEN процесс завершается с ошибкой</check-3>
+      </module-checks>
+    </V-M-BOT>
+  </module-verification>
+
+  <phase-gates>
+    <gate phase="Phase-5">
+      <description>Проверка успешного применения багфиксов</description>
+      <checks>
+        <check>No trailing commas in SQL CREATE TABLE statements</check>
+        <check>SQL query in leaderboard.ts is properly quoted</check>
+        <check>stats.user_id references internal users.id, not telegram_id</check>
+        <check>tsc --noEmit passes for all modules</check>
+      </checks>
+    </gate>
+  </phase-gates>
+</VerificationPlan>

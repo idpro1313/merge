@@ -1,0 +1,8 @@
+{
+  "name": "Merge Tap",
+  "short_name": "MergeTap",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#17212b",
+  "description": "Merge 3 items to level up!"
+}
