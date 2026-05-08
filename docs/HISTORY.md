@@ -1,5 +1,24 @@
 # История изменений проекта Merge Tap
 
+
+## 0.1.0 — GRACE integrity fixes (post-review)
+
+- Исправлены критические markup-проблемы (аудит выявил 18 критических):
+  - `main.tsx`: убрана некорректная декларация экспорта в MODULE_MAP, добавлен BLOCK
+  - `Cell.tsx`: METHOD перенесён с приватной CellInner на экспортируемый Cell
+  - `client.ts`: добавлен контракт для объекта api, убраны fn-аннотации для методов api (они не функции)
+  - `bot/index.ts`: исправлена обратная вложенность BLOCK/METHOD, убран фиктивный METHOD_botSetup, все блоки вложены в METHOD_init
+- Исправлена опечатка SIDE_EFFECTES (→ SIDE_EFFECTS) в 11 контрактах `board.ts`
+- `knowledge-graph.xml`: исправлены depends (M-BOT), добавлены 12 CrossLinks, 5 модулей с аннотациями, типы и константы M-TYPES/M-API/M-LEVELS
+- `development-plan.xml`: убран несуществующий M-CONFIG из Phase-1
+- `technology.xml`: уникальные теги для dep/constraint/tool
+- `verification-plan.xml`: gate-Phase-5
+- Создан `docs/operational-packets.xml`
+
+**Причина:** GRACE full-integrity review показал 18 критических проблем в markup, graph и XML-соглашениях.
+**Затронутые файлы:** main.tsx, Cell.tsx, client.ts, bot/index.ts, board.ts, docs/*.xml (все 6)
+---
+
 ## 0.1.0 — Инициализация GRACE-структуры
 
 ### Сессия 2 (текущая)
@@ -33,6 +52,25 @@
 - Добавлена GRACE-разметка во все исходники
 - Созданы конфиги package.json и tsconfig
 
+---
+
+
+## 0.1.0 — GRACE integrity fixes (post-review)
+
+- Исправлены критические markup-проблемы (аудит выявил 18 критических):
+  - `main.tsx`: убрана некорректная декларация экспорта в MODULE_MAP, добавлен BLOCK
+  - `Cell.tsx`: METHOD перенесён с приватной CellInner на экспортируемый Cell
+  - `client.ts`: добавлен контракт для объекта api, убраны fn-аннотации для методов api (они не функции)
+  - `bot/index.ts`: исправлена обратная вложенность BLOCK/METHOD, убран фиктивный METHOD_botSetup, все блоки вложены в METHOD_init
+- Исправлена опечатка SIDE_EFFECTES (→ SIDE_EFFECTS) в 11 контрактах `board.ts`
+- `knowledge-graph.xml`: исправлены depends (M-BOT), добавлены 12 CrossLinks, 5 модулей с аннотациями, типы и константы M-TYPES/M-API/M-LEVELS
+- `development-plan.xml`: убран несуществующий M-CONFIG из Phase-1
+- `technology.xml`: уникальные теги для dep/constraint/tool
+- `verification-plan.xml`: gate-Phase-5
+- Создан `docs/operational-packets.xml`
+
+**Причина:** GRACE full-integrity review показал 18 критических проблем в markup, graph и XML-соглашениях.
+**Затронутые файлы:** main.tsx, Cell.tsx, client.ts, bot/index.ts, board.ts, docs/*.xml (все 6)
 ---
 
 ## 0.1.0 — Инициализация GRACE-структуры (предыдущая сессия)

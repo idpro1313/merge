@@ -4,26 +4,26 @@
   <Framework>Express 4.21 (backend), React 18.3 (frontend)</Framework>
 
   <Dependencies>
-    <dep name="express" version="^4.21.1" purpose="HTTP-сервер backend" />
-    <dep name="cors" version="^2.8.5" purpose="CORS-заголовки" />
-    <dep name="jsonwebtoken" version="^9.0.2" purpose="JWT-аутентификация" />
-    <dep name="sql.js" version="^1.11.0" purpose="SQLite в памяти (через better-sqlite3)" />
-    <dep name="better-sqlite3" version="^11.6.0" purpose="SQLite-Binding для Node.js" />
-    <dep name="react" version="^18.3.1" purpose="UI-библиотека" />
-    <dep name="react-dom" version="^18.3.1" purpose="DOM-рендер React" />
-    <dep name="vite" version="^6.0.0" purpose="Сборщик frontend" />
-    <dep name="node-telegram-bot-api" version="latest" purpose="Telegram Bot API client" />
+    <dep-express version="^4.21.1" purpose="HTTP-сервер backend" />
+    <dep-cors version="^2.8.5" purpose="CORS-заголовки" />
+    <dep-jsonwebtoken version="^9.0.2" purpose="JWT-аутентификация" />
+    <dep-sqljs version="^1.11.0" purpose="SQLite в памяти (через better-sqlite3)" />
+    <dep-better-sqlite3 version="^11.6.0" purpose="SQLite-Binding для Node.js" />
+    <dep-react version="^18.3.1" purpose="UI-библиотека" />
+    <dep-react-dom version="^18.3.1" purpose="DOM-рендер React" />
+    <dep-vite version="^6.0.0" purpose="Сборщик frontend" />
+    <dep-node-telegram-bot-api version="latest" purpose="Telegram Bot API client" />
   </Dependencies>
 
   <VersionConstraints>
-    <constraint lib="react" min="18.0.0" max="18.x" reason="The frontend depends on React 18 APIs" />
-    <constraint lib="typescript" min="5.6.0" max="5.6.x" reason="Project uses TypeScript 5.6" />
+    <constraint-react min="18.0.0" max="18.x" reason="The frontend depends on React 18 APIs" />
+    <constraint-typescript min="5.6.0" max="5.6.x" reason="Project uses TypeScript 5.6" />
   </VersionConstraints>
 
   <Tooling>
-    <tool name="bundler" value="vite" version="6.x" />
-    <tool name="runner" value="tsx" version="4.x" />
-    <tool name="runtime" value="node" version="22.x" />
+    <tool-bundler value="vite" version="6.x" />
+    <tool-runner value="tsx" version="4.x" />
+    <tool-runtime value="node" version="22.x" />
   </Tooling>
 
   <Testing>
@@ -52,3 +52,4 @@
     <shape>Same-origin monolith with one SQLite database and one Telegram bot process.</shape>
   </DeliveryShape>
 </TechnologyStack>
+

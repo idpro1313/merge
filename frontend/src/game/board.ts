@@ -36,7 +36,7 @@ let idCounter = 0
 //   PURPOSE: Generate unique cell ID using incrementing counter
 //   INPUTS: none
 //   OUTPUTS: string - unique ID like "cell-1", "cell-2", etc.
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: createId
 export function createId(): string {
@@ -49,7 +49,7 @@ export function createId(): string {
 //   PURPOSE: Create a Cell object with given level and unique ID
 //   INPUTS: { level: number }
 //   OUTPUTS: Cell
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: createCell
 export function createCell(level: number): Cell {
@@ -62,7 +62,7 @@ export function createCell(level: number): Cell {
 //   PURPOSE: Create an empty BOARD_SIZE x BOARD_SIZE grid filled with null
 //   INPUTS: none
 //   OUTPUTS: Board
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: createEmptyBoard
 export function createEmptyBoard(): Board {
@@ -77,7 +77,7 @@ export function createEmptyBoard(): Board {
 //   PURPOSE: Find all empty (null) cell positions on the board
 //   INPUTS: { board: Board }
 //   OUTPUTS: { row: number; col: number }[]
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: getEmptyCells
 export function getEmptyCells(board: Board): { row: number; col: number }[] {
@@ -96,7 +96,7 @@ export function getEmptyCells(board: Board): { row: number; col: number }[] {
 //   PURPOSE: Place a level-1 cell on a random empty cell
 //   INPUTS: { board: Board }
 //   OUTPUTS: Board | null - null if board is full
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: spawnRandomCell
 export function spawnRandomCell(board: Board): Board | null {
@@ -114,7 +114,7 @@ export function spawnRandomCell(board: Board): Board | null {
 //   PURPOSE: Place a cell at specific coordinates with given level
 //   INPUTS: { board: Board, row: number, col: number, level: number }
 //   OUTPUTS: Board
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: spawnCellAt
 export function spawnCellAt(board: Board, row: number, col: number, level: number): Board {
@@ -129,7 +129,7 @@ export function spawnCellAt(board: Board, row: number, col: number, level: numbe
 //   PURPOSE: Remove a cell at given coordinates by setting it to null
 //   INPUTS: { board: Board, row: number, col: number }
 //   OUTPUTS: Board
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: removeCell
 export function removeCell(board: Board, row: number, col: number): Board {
@@ -144,7 +144,7 @@ export function removeCell(board: Board, row: number, col: number): Board {
 //   PURPOSE: Find all cell positions that match a given level
 //   INPUTS: { board: Board, level: number }
 //   OUTPUTS: { row: number; col: number }[]
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: findCellsByLevel
 export function findCellsByLevel(board: Board, level: number): { row: number; col: number }[] {
@@ -163,7 +163,7 @@ export function findCellsByLevel(board: Board, level: number): { row: number; co
 //   PURPOSE: Count number of non-null cells on the board
 //   INPUTS: { board: Board }
 //   OUTPUTS: number
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: countCells
 export function countCells(board: Board): number {
@@ -182,7 +182,7 @@ export function countCells(board: Board): number {
 //   PURPOSE: Determine the highest cell level on the board
 //   INPUTS: { board: Board }
 //   OUTPUTS: number - 0 if board is empty
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: getMaxLevel
 export function getMaxLevel(board: Board): number {
@@ -201,7 +201,7 @@ export function getMaxLevel(board: Board): number {
 //   PURPOSE: Deep-clone the board (cells are shallow-cloned)
 //   INPUTS: { board: Board }
 //   OUTPUTS: Board
-//   SIDE_EFFECTES: None
+//   SIDE_EFFECTS: None
 //   LINKS: M-BOARD_LOGIC
 // END_CONTRACT: cloneBoard
 export function cloneBoard(board: Board): Board {

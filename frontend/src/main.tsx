@@ -10,7 +10,7 @@
 // END_MODULE_CONTRACT
 //
 // START_MODULE_MAP
-//   main - mounts App component in StrictMode to #root
+//   bootstrap - mounts App component in StrictMode to #root (script entry, no exports)
 // END_MODULE_MAP
 //
 // START_CHANGE_SUMMARY
@@ -22,6 +22,8 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 
+// START_BLOCK_BOOTSTRAP
 createRoot(document.getElementById('root')!).render(
   <StrictMode><App /></StrictMode>,
 )
+// END_BLOCK_BOOTSTRAP

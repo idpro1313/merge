@@ -9,11 +9,10 @@
       <depends>нет (использует fetch)</depends>
       <verification-ref>V-M-API</verification-ref>
       <annotations>
-        <fn-login PURPOSE="Аутентификация через Telegram initData" />
-        <fn-getProfile PURPOSE="Получение профиля текущего пользователя" />
-        <fn-saveGame PURPOSE="Сохранение игры на сервере" />
-        <fn-loadGame PURPOSE="Загрузка сохранённой игры с сервера" />
-        <fn-getLeaderboard PURPOSE="Получение таблицы лидеров" />
+        <export-api PURPOSE="Объект API c методами login, getProfile, saveGame, loadGame, getLeaderboard" />
+        <type-SaveData PURPOSE="Данные для сохранения/загрузки игры" />
+        <type-LeaderboardEntry PURPOSE="Запись таблицы лидеров" />
+        <type-UserProfile PURPOSE="Профиль пользователя" />
       </annotations>
     </M-API>
 
@@ -48,6 +47,8 @@
         <type-Board PURPOSE="Матрица BOARD_SIZE x BOARD_SIZE из Cell | null" />
         <type-GameState PURPOSE="Полное состояние игры" />
         <type-Position PURPOSE="Координаты клетки (row, col)" />
+        <export-BOARD_SIZE PURPOSE="Размер доски (8)" />
+        <export-MERGE_REQUIRED PURPOSE="Ячеек для слияния (3)" />
       </annotations>
     </M-TYPES>
 
@@ -57,6 +58,7 @@
       <depends>нет</depends>
       <verification-ref>V-M-LEVELS</verification-ref>
       <annotations>
+        <type-LevelStyle PURPOSE="Компоненты цвета уровня (hue, saturation, lightness)" />
         <fn-getLevelStyle PURPOSE="Получить HSL-стиль для уровня" />
         <fn-getLevelColor PURPOSE="Получить CSS-цвет фона для уровня" />
         <fn-getLevelTextColor PURPOSE="Получить CSS-цвет текста для уровня" />
@@ -70,6 +72,11 @@
       <verification-ref>V-M-USE_GAME</verification-ref>
       <annotations>
         <fn-useGame PURPOSE="Основной хук игровой логики" />
+        <fn-tapCell PURPOSE="Обработчик тапа по ячейке" />
+        <fn-toggleRemoveMode PURPOSE="Переключение режима удаления" />
+        <fn-saveGame PURPOSE="Сохранение игры на сервер" />
+        <fn-loadGame PURPOSE="Загрузка игры с сервера" />
+        <fn-resetGame PURPOSE="Сброс игры к начальному состоянию" />
       </annotations>
       <CrossLink from="M-USE_GAME" to="M-BOARD_LOGIC" relation="uses" />
       <CrossLink from="M-USE_GAME" to="M-TYPES" relation="uses" />
@@ -81,6 +88,13 @@
       <path>frontend/src/App.tsx</path>
       <depends>M-USE_GAME, M-API, M-BOARD_LOGIC, M-COMPONENTS</depends>
       <verification-ref>V-M-APP</verification-ref>
+      <annotations>
+        <fn-App PURPOSE="Корневой компонент: аутентификация, композиция игрового UI" />
+      </annotations>
+      <CrossLink from="M-APP" to="M-USE_GAME" relation="uses" />
+      <CrossLink from="M-APP" to="M-API" relation="uses" />
+      <CrossLink from="M-APP" to="M-BOARD_LOGIC" relation="uses" />
+      <CrossLink from="M-APP" to="M-COMPONENTS" relation="uses" />
     </M-APP>
 
     <M-COMPONENTS NAME="UI Components" TYPE="UI_COMPONENT">
@@ -95,12 +109,16 @@
         <fn-ActionBar PURPOSE="Панель действий: Remove, Save, Load, Reset, Rankings" />
         <fn-Leaderboard PURPOSE="Модальное окно таблицы лидеров" />
       </annotations>
+      <CrossLink from="M-COMPONENTS" to="M-TYPES" relation="uses" />
+      <CrossLink from="M-COMPONENTS" to="M-LEVELS" relation="uses" />
+      <CrossLink from="M-COMPONENTS" to="M-API" relation="uses" />
     </M-COMPONENTS>
 
     <M-MAIN_ENTRY NAME="Main Entry" TYPE="ENTRY_POINT">
       <purpose>Точка входа React-приложения</purpose>
       <path>frontend/src/main.tsx</path>
       <depends>M-APP</depends>
+      <CrossLink from="M-MAIN_ENTRY" to="M-APP" relation="depends-on" />
     </M-MAIN_ENTRY>
 
     <M-BACKEND_ENTRY NAME="Backend Entry" TYPE="ENTRY_POINT">
@@ -108,6 +126,12 @@
       <path>backend/src/index.ts</path>
       <depends>M-DB, M-AUTH, M-BACKEND_ROUTES</depends>
       <verification-ref>V-M-BACKEND_ENTRY</verification-ref>
+      <annotations>
+        <fn-main PURPOSE="Инициализация БД, конфигурация Express, запуск сервера" />
+      </annotations>
+      <CrossLink from="M-BACKEND_ENTRY" to="M-DB" relation="uses" />
+      <CrossLink from="M-BACKEND_ENTRY" to="M-AUTH" relation="uses" />
+      <CrossLink from="M-BACKEND_ENTRY" to="M-BACKEND_ROUTES" relation="uses" />
     </M-BACKEND_ENTRY>
 
     <M-DB NAME="Database Layer" TYPE="DATA_LAYER">
@@ -115,6 +139,11 @@
       <path>backend/src/db.ts</path>
       <depends>sql.js</depends>
       <verification-ref>V-M-DB</verification-ref>
+      <annotations>
+        <fn-initDb PURPOSE="Инициализация БД (синглтон)" />
+        <fn-getDb PURPOSE="Получение экземпляра БД" />
+        <fn-saveDb PURPOSE="Сохранение БД на диск" />
+      </annotations>
     </M-DB>
 
     <M-AUTH NAME="Auth Middleware" TYPE="INTEGRATION">
@@ -122,6 +151,13 @@
       <path>backend/src/middleware/auth.ts</path>
       <depends>M-DB, jsonwebtoken</depends>
       <verification-ref>V-M-AUTH</verification-ref>
+      <annotations>
+        <type-AuthUser PURPOSE="Payload аутентифицированного пользователя" />
+        <fn-verifyTelegramInitData PURPOSE="Верификация HMAC-SHA256 подписи Telegram initData" />
+        <fn-authMiddleware PURPOSE="Express-middleware проверки JWT токена" />
+        <fn-loginHandler PURPOSE="Обработчик логина: верификация initData, создание пользователя, JWT" />
+      </annotations>
+      <CrossLink from="M-AUTH" to="M-DB" relation="uses" />
     </M-AUTH>
 
     <M-BACKEND_ROUTES NAME="Backend Routes" TYPE="CORE_LOGIC">
@@ -136,8 +172,11 @@
     <M-BOT NAME="Telegram Bot" TYPE="INTEGRATION">
       <purpose>Telegram-бот для взаимодействия с Mini App</purpose>
       <path>bot/src/index.ts</path>
-      <depends>node-telegram-bot-api, M-API</depends>
+      <depends>node-telegram-bot-api</depends>
       <verification-ref>V-M-BOT</verification-ref>
+      <annotations>
+        <fn-init PURPOSE="Валидация конфига, создание бота, регистрация /start и /top" />
+      </annotations>
     </M-BOT>
   </Project>
 </KnowledgeGraph>

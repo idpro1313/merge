@@ -3,7 +3,6 @@
     <Phase-1 name="Foundation" status="done">
       <description>Инициализация проекта, GRACE-структура, базовая архитектура</description>
       <modules>
-        <ref>M-CONFIG</ref>
         <ref>M-TYPES</ref>
         <ref>M-BOARD_LOGIC</ref>
         <ref>M-LEVELS</ref>

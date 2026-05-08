@@ -1,0 +1,47 @@
+<OperationalPackets VERSION="0.1.0">
+  <ExecutionPacket>
+    <purpose>Context packet emitted by controller at wave boundaries and checkpoints</purpose>
+    <fields>
+      <field-step>Current step name and sequence number</field-step>
+      <field-ownership>Whose write-scope includes these changes</field-ownership>
+      <field-files>Files changed, paths and purpose</field-files>
+      <field-assumptions>What the worker assumed during this step</field-assumptions>
+      <field-commands>Commands run (lint, test, static-check)</field-commands>
+      <field-evidence>Output and verification evidence collected</field-evidence>
+      <field-next-action>What step follows</field-next-action>
+    </fields>
+  </ExecutionPacket>
+
+  <GraphDelta>
+    <purpose>Proposed changes to knowledge-graph.xml during execution</purpose>
+    <fields>
+      <field-added-modules>Module entries to add</field-added-modules>
+      <field-removed-modules>Module entries to remove</field-removed-modules>
+      <field-changed-paths>Path updates for existing modules</field-changed-paths>
+      <field-added-crosslinks>CrossLink entries to add</field-added-crosslinks>
+      <field-updated-annotations>Annotation changes</field-updated-annotations>
+    </fields>
+  </GraphDelta>
+
+  <VerificationDelta>
+    <purpose>Proposed changes to verification-plan.xml during execution</purpose>
+    <fields>
+      <field-added-entries>V-M-xxx entries to add</field-added-entries>
+      <field-updated-module-checks>Check list updates for existing entries</field-updated-module-checks>
+      <field-added-scenarios>New scenario entries</field-added-scenarios>
+      <field-updated-log-markers>Log marker requirement changes</field-updated-log-markers>
+    </fields>
+  </VerificationDelta>
+
+  <FailurePacket>
+    <purpose>Handoff packet when a step fails and needs human or controller review</purpose>
+    <fields>
+      <field-step>Which step failed</field-step>
+      <field-scenario>Expected behavior scenario</field-scenario>
+      <field-expected-evidence>What evidence was expected (tests, logs, markers)</field-expected-evidence>
+      <field-observed-evidence>What was actually observed</field-observed-evidence>
+      <field-first-divergent-block>First semantic block where observed diverges from expected</field-first-divergent-block>
+      <field-suggested-next-action>What the reviewer should do next</field-suggested-next-action>
+    </fields>
+  </FailurePacket>
+</OperationalPackets>

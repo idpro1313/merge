@@ -31,20 +31,21 @@ interface CellProps {
   onClick: (pos: Position) => void
 }
 
-// START_METHOD_CellInner
-// START_CONTRACT: CellInner
+// START_METHOD_Cell
+// START_CONTRACT: Cell
 //   PURPOSE: Render a single cell button with level number, HSL background, and state CSS classes
 //   INPUTS: { cell, row, col, isSelected, isMergeProgress, removeMode, onClick }
-//   OUTPUTS: JSX.Element
+//   OUTPUTS: JSX.Element (via React.memo)
 //   SIDE_EFFECTS: None
 //   LINKS: M-COMPONENTS
-// END_CONTRACT: CellInner
+// END_CONTRACT: Cell
 function CellInner({ cell, isSelected, isMergeProgress, removeMode, onClick, row, col }: CellProps) {
   const handleClick = () => onClick({ row, col })
 
   let style: React.CSSProperties = {}
   let className = 'cell'
 
+  // START_BLOCK_FILLED_STYLE
   if (cell) {
     const bg = getLevelColor(cell.level)
     const textColor = getLevelTextColor(cell.level)
@@ -53,10 +54,13 @@ function CellInner({ cell, isSelected, isMergeProgress, removeMode, onClick, row
   } else {
     className += ' cell--empty'
   }
+  // END_BLOCK_FILLED_STYLE
 
+  // START_BLOCK_STATE_CLASSES
   if (isSelected) className += ' cell--selected'
   if (isMergeProgress) className += ' cell--merge-progress'
   if (removeMode) className += ' cell--remove-mode'
+  // END_BLOCK_STATE_CLASSES
 
   return (
     <button className={className} style={style} onClick={handleClick}>
@@ -66,6 +70,6 @@ function CellInner({ cell, isSelected, isMergeProgress, removeMode, onClick, row
     </button>
   )
 }
-// END_METHOD_CellInner
 
 export const Cell = React.memo(CellInner)
+// END_METHOD_Cell

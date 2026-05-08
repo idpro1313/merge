@@ -26,6 +26,14 @@
 
 const API_BASE = '/api'
 
+// START_CONTRACT: api
+//   PURPOSE: HTTP API client object with authenticated methods for all backend endpoints
+//   INPUTS: none (reads token from localStorage)
+//   OUTPUTS: { login, getProfile, saveGame, loadGame, getLeaderboard }
+//   SIDE_EFFECTS: Network requests to backend API
+//   LINKS: M-API
+// END_CONTRACT: api
+
 // START_METHOD_request
 // START_CONTRACT: request
 //   PURPOSE: Generic authenticated HTTP request helper
