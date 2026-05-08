@@ -1,12 +1,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-primary: #17212b;
-  --bg-secondary: #242f3d;
+  --tg-bg: #17212b;
+  --tg-secondary-bg: #242f3d;
+  --tg-text: #ffffff;
+  --tg-hint: #8b9eb0;
+  --tg-link: #6ab2f2;
+  --tg-button: #2ea6ff;
+  --tg-button-text: #ffffff;
+  --bg-primary: var(--tg-bg);
+  --bg-secondary: var(--tg-secondary-bg);
   --bg-cell: #2b3b4a;
-  --text-primary: #ffffff;
-  --text-secondary: #8b9eb0;
-  --accent: #6ab2f2;
+  --text-primary: var(--tg-text);
+  --text-secondary: var(--tg-hint);
+  --accent: var(--tg-link);
   --border-radius: 8px;
   --cell-gap: 3px;
 }

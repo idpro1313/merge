@@ -1,6 +1,20 @@
 # История изменений проекта Merge Tap
 
 
+
+## 0.1.0 — Telegram Mini App integration fixes
+
+- Добавлен `Telegram.WebApp.expand()` перед `ready()` — Mini App открывается в полноэкранном режиме
+- Добавлена синхронизация с `tg.themeParams`: `--tg-bg`, `--tg-secondary-bg`, `--tg-text`, `--tg-hint`, `--tg-link`, `--tg-button`, `--tg-button-text` применяются как CSS-переменные, fallback на тёмную тему
+- Все CSS-переменные переведены на ссылки `var(--tg-*)` — авто-адаптация под тему Telegram
+- Добавлен `Telegram.WebApp.MainButton` для Save Game — показывается/скрывается при наличии несохранённых изменений
+- Расширен TypeScript-тип `window.Telegram.WebApp` (expand, themeParams, MainButton)
+- Удалён бесполезный `manifest.json` (игнорируется в Telegram WebView)
+
+**Причина:** аудит интеграции с Telegram Mini App выявил 4 проблемы: нет expand, нет themeParams, не используется MainButton, лишний manifest.
+**Затронутые файлы:** `frontend/src/App.tsx`, `frontend/src/index.css`, `frontend/public/manifest.json` (удалён)
+---
+
 ## 0.1.0 — GRACE integrity fixes (post-review)
 
 - Исправлены критические markup-проблемы (аудит выявил 18 критических):
@@ -54,6 +68,20 @@
 
 ---
 
+
+
+## 0.1.0 — Telegram Mini App integration fixes
+
+- Добавлен `Telegram.WebApp.expand()` перед `ready()` — Mini App открывается в полноэкранном режиме
+- Добавлена синхронизация с `tg.themeParams`: `--tg-bg`, `--tg-secondary-bg`, `--tg-text`, `--tg-hint`, `--tg-link`, `--tg-button`, `--tg-button-text` применяются как CSS-переменные, fallback на тёмную тему
+- Все CSS-переменные переведены на ссылки `var(--tg-*)` — авто-адаптация под тему Telegram
+- Добавлен `Telegram.WebApp.MainButton` для Save Game — показывается/скрывается при наличии несохранённых изменений
+- Расширен TypeScript-тип `window.Telegram.WebApp` (expand, themeParams, MainButton)
+- Удалён бесполезный `manifest.json` (игнорируется в Telegram WebView)
+
+**Причина:** аудит интеграции с Telegram Mini App выявил 4 проблемы: нет expand, нет themeParams, не используется MainButton, лишний manifest.
+**Затронутые файлы:** `frontend/src/App.tsx`, `frontend/src/index.css`, `frontend/public/manifest.json` (удалён)
+---
 
 ## 0.1.0 — GRACE integrity fixes (post-review)
 
