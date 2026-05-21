@@ -25,11 +25,14 @@ Thumbs.db
 work/*
 !work/README.md
 
-# Cursor / Kilo Code — только локально
+# Cursor / Kilo Code / Doxygen — только локально
 .cursor/
 .kilocode/
 .kilo/
 Prompts.xml
+Doxyfile
+kilo.json
+kilo.jsonc
 
 # Журнал агента (вести локально; см. agent-rules.mdc)
 docs/HISTORY.md
