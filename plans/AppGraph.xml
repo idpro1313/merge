@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<KnowledgeGraph>
+  <MergeTap_Info TYPE="PROJECT_INFO">
+    <keywords>merge-tap, Telegram Mini App, React, Express, sql.js, merge game</keywords>
+    <annotation>Merge Tap — слияние ячеек в Telegram; frontend + backend + bot.</annotation>
+    <BusinessScenarios>
+      <Scenario NAME="Auth">initData → POST /api/auth/login → JWT</Scenario>
+      <Scenario NAME="Play">tapCell → merge 3+ → score</Scenario>
+      <Scenario NAME="Persist">save/load → SQLite saves</Scenario>
+    </BusinessScenarios>
+  </MergeTap_Info>
+
+  <frontend_game_types_ts FILE="frontend/src/game/types.ts" TYPE="TYPES_MODULE">
+    <annotation>M-TYPES</annotation>
+  </frontend_game_types_ts>
+  <frontend_game_board_ts FILE="frontend/src/game/board.ts" TYPE="CORE_LOGIC_MODULE">
+    <annotation>M-BOARD_LOGIC</annotation>
+    <CrossLinks><Link TARGET="frontend_game_types_ts" TYPE="DEPENDS" /></CrossLinks>
+  </frontend_game_board_ts>
+  <frontend_game_levels_ts FILE="frontend/src/game/levels.ts" TYPE="UTILITY_MODULE">
+    <annotation>M-LEVELS</annotation>
+  </frontend_game_levels_ts>
+  <frontend_api_client_ts FILE="frontend/src/api/client.ts" TYPE="UTILITY_MODULE">
+    <annotation>M-API</annotation>
+  </frontend_api_client_ts>
+  <frontend_hooks_useGame_ts FILE="frontend/src/hooks/useGame.ts" TYPE="CORE_LOGIC_MODULE">
+    <annotation>M-USE_GAME</annotation>
+    <CrossLinks>
+      <Link TARGET="frontend_game_board_ts" TYPE="USES" />
+      <Link TARGET="frontend_game_types_ts" TYPE="USES" />
+      <Link TARGET="frontend_api_client_ts" TYPE="USES" />
+    </CrossLinks>
+  </frontend_hooks_useGame_ts>
+  <frontend_components_DIR FILE="frontend/src/components/" TYPE="UI_MODULE">
+    <annotation>M-COMPONENTS: Board, Cell, ScoreBar, ActionBar, Leaderboard</annotation>
+    <CrossLinks>
+      <Link TARGET="frontend_game_levels_ts" TYPE="STYLES" />
+      <Link TARGET="frontend_game_types_ts" TYPE="USES" />
+      <Link TARGET="frontend_api_client_ts" TYPE="LEADERBOARD" />
+    </CrossLinks>
+  </frontend_components_DIR>
+  <frontend_App_tsx FILE="frontend/src/App.tsx" TYPE="UI_ROOT_MODULE">
+    <annotation>M-APP</annotation>
+    <CrossLinks>
+      <Link TARGET="frontend_hooks_useGame_ts" TYPE="USES" />
+      <Link TARGET="frontend_api_client_ts" TYPE="AUTH" />
+      <Link TARGET="frontend_components_DIR" TYPE="COMPOSES" />
+    </CrossLinks>
+  </frontend_App_tsx>
+  <frontend_main_tsx FILE="frontend/src/main.tsx" TYPE="ENTRY_POINT">
+    <annotation>M-MAIN_ENTRY</annotation>
+    <CrossLinks><Link TARGET="frontend_App_tsx" TYPE="RENDERS" /></CrossLinks>
+  </frontend_main_tsx>
+
+  <backend_db_ts FILE="backend/src/db.ts" TYPE="DATA_LAYER_MODULE">
+    <annotation>M-DB: sql.js, users, saves, stats</annotation>
+  </backend_db_ts>
+  <backend_middleware_auth_ts FILE="backend/src/middleware/auth.ts" TYPE="INTEGRATION_MODULE">
+    <annotation>M-AUTH: initData HMAC, JWT</annotation>
+    <CrossLinks><Link TARGET="backend_db_ts" TYPE="USES" /></CrossLinks>
+  </backend_middleware_auth_ts>
+  <backend_routes_DIR FILE="backend/src/routes/" TYPE="ROUTING_MODULE">
+    <annotation>M-BACKEND_ROUTES: game, users, leaderboard</annotation>
+    <CrossLinks>
+      <Link TARGET="backend_middleware_auth_ts" TYPE="PROTECTS" />
+      <Link TARGET="backend_db_ts" TYPE="QUERIES" />
+    </CrossLinks>
+  </backend_routes_DIR>
+  <backend_index_ts FILE="backend/src/index.ts" TYPE="ENTRY_POINT">
+    <annotation>M-BACKEND_ENTRY</annotation>
+    <CrossLinks>
+      <Link TARGET="backend_db_ts" TYPE="INIT" />
+      <Link TARGET="backend_routes_DIR" TYPE="MOUNTS" />
+      <Link TARGET="backend_middleware_auth_ts" TYPE="LOGIN" />
+    </CrossLinks>
+  </backend_index_ts>
+
+  <bot_index_ts FILE="bot/src/index.ts" TYPE="INTEGRATION_MODULE">
+    <annotation>M-BOT: /start, /top</annotation>
+    <CrossLinks><Link TARGET="backend_routes_DIR" TYPE="LEADERBOARD_HTTP" /></CrossLinks>
+  </bot_index_ts>
+
+  <ProjectCrossLinks TYPE="MODULE_INTERACTIONS_OVERVIEW">
+    <Link TARGET="frontend_main_tsx" TYPE="CLIENT_ENTRY" />
+    <Link TARGET="backend_index_ts" TYPE="API_ENTRY" />
+    <Link TARGET="bot_index_ts" TYPE="TELEGRAM_ENTRY" />
+  </ProjectCrossLinks>
+</KnowledgeGraph>
