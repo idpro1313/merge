@@ -25,5 +25,10 @@ Thumbs.db
 work/*
 !work/README.md
 
+# Cursor / Kilo Code — только локально
+.cursor/
+.kilocode/
+.kilo/
+
 # Журнал агента (вести локально; см. agent-rules.mdc)
 docs/HISTORY.md
