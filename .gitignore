@@ -29,6 +29,7 @@ work/*
 .cursor/
 .kilocode/
 .kilo/
+Prompts.xml
 
 # Журнал агента (вести локально; см. agent-rules.mdc)
 docs/HISTORY.md
